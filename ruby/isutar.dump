@@ -1,0 +1,53 @@
+-- MySQL dump 10.13  Distrib 5.7.19, for Linux (x86_64)
+--
+-- Host: localhost    Database: isutar
+-- ------------------------------------------------------
+-- Server version	5.7.19-0ubuntu0.16.04.1-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `star`
+--
+
+DROP TABLE IF EXISTS `star`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `star` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(191) COLLATE utf8mb4_bin NOT NULL,
+  `user_name` varchar(191) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `star`
+--
+
+LOCK TABLES `star` WRITE;
+/*!40000 ALTER TABLE `star` DISABLE KEYS */;
+INSERT INTO `star` VALUES (1,'教育部','mahiro','2017-10-08 13:22:59'),(2,'伊東祐相','mahiro','2017-10-08 13:23:00'),(3,'蒲須坂駅','mahiro','2017-10-08 13:23:00'),(4,'城井長房','mahiro','2017-10-08 13:23:00'),(5,'鳥取いなば農業協同組合','mahiro','2017-10-08 13:23:00'),(6,'380年','mahiro','2017-10-08 13:23:01'),(7,'若松市','mahiro','2017-10-08 13:23:01'),(8,'リック・ドム','mahiro','2017-10-08 13:23:02'),(9,'958年','mahiro','2017-10-08 13:23:02'),(10,'渋谷邦彦','mahiro','2017-10-08 13:23:02'),(11,'上総片貝駅','yuki','2017-10-08 13:23:12'),(12,'イギリス政府','yuki','2017-10-08 13:23:14'),(13,'5月25日 (旧暦)','yuki','2017-10-08 13:23:14'),(14,'平尾山','yuki','2017-10-08 13:23:15'),(15,'教育部','yuki','2017-10-08 13:23:16'),(16,'伊東祐相','yuki','2017-10-08 13:23:17'),(17,'蒲須坂駅','yuki','2017-10-08 13:23:18'),(18,'城井長房','yuki','2017-10-08 13:23:18'),(19,'鳥取いなば農業協同組合','yuki','2017-10-08 13:23:19'),(20,'5月25日 (旧暦)','taniguchi','2017-10-08 13:23:19'),(21,'380年','yuki','2017-10-08 13:23:20'),(22,'平尾山','taniguchi','2017-10-08 13:23:20'),(23,'教育部','taniguchi','2017-10-08 13:23:21'),(24,'伊東祐相','taniguchi','2017-10-08 13:23:21'),(25,'蒲須坂駅','taniguchi','2017-10-08 13:23:22'),(26,'城井長房','taniguchi','2017-10-08 13:23:23'),(27,'鳥取いなば農業協同組合','taniguchi','2017-10-08 13:23:24'),(28,'380年','taniguchi','2017-10-08 13:23:25'),(29,'若松市','taniguchi','2017-10-08 13:23:27'),(30,'リック・ドム','taniguchi','2017-10-08 13:23:34'),(31,'菅山かおる','oppara','2017-10-08 13:23:38'),(32,'巨大基数','oppara','2017-10-08 13:23:40'),(33,'菅山かおる','naruse','2017-10-08 13:23:41'),(34,'宮城県道59号古川一迫線','oppara','2017-10-08 13:23:41'),(35,'北消防署','oppara','2017-10-08 13:23:42'),(36,'輪状甲状筋','oppara','2017-10-08 13:23:42'),(37,'巨大基数','naruse','2017-10-08 13:23:43'),(38,'戸川正安','oppara','2017-10-08 13:23:43'),(39,'宮城県道59号古川一迫線','naruse','2017-10-08 13:23:44'),(40,'上総片貝駅','oppara','2017-10-08 13:23:44'),(41,'北消防署','naruse','2017-10-08 13:23:45'),(42,'輪状甲状筋','naruse','2017-10-08 13:23:45'),(43,'イギリス政府','oppara','2017-10-08 13:23:45'),(44,'戸川正安','naruse','2017-10-08 13:23:45'),(45,'ウーズ','oppara','2017-10-08 13:23:46'),(46,'上総片貝駅','naruse','2017-10-08 13:23:46'),(47,'内田修平','oppara','2017-10-08 13:23:47'),(48,'イギリス政府','naruse','2017-10-08 13:23:48'),(49,'ウーズ','naruse','2017-10-08 13:23:49'),(50,'内田修平','naruse','2017-10-08 13:23:50');
+/*!40000 ALTER TABLE `star` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-10-08 14:02:20
