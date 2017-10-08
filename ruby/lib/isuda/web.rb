@@ -9,9 +9,22 @@ require 'mysql2-cs-bind'
 require 'rack/utils'
 require 'sinatra/base'
 require 'tilt/erubis'
+require 'redis'
+
+require 'rack-mini-profiler'
+# require 'rack-lineprof'
+require 'stackprof' #if ENV['ISUPROFILE']
+require 'rack-lineprof'
+
 
 module Isuda
   class Web < ::Sinatra::Base
+    use Rack::MiniProfiler
+    use Rack::Lineprof
+    # use Rack::Lineprof
+    Dir.mkdir('/tmp/stackprof') unless File.exist?('/tmp/stackprof')
+    use StackProf::Middleware, enabled: ENV['ISUPROFILE'] == ?1, mode: :cpu, interval: 1000, save_every: 100, path: '/tmp/stackprof'
+
     enable :protection
     enable :sessions
 
@@ -49,6 +62,9 @@ module Isuda
     end
 
     helpers do
+      def redis
+        @redis ||= Redis.new host:"127.0.0.1", port:"6379"
+      end
       def db
         Thread.current[:db] ||=
           begin
@@ -90,8 +106,11 @@ module Isuda
       end
 
       def htmlify(content)
-        keywords = db.xquery(%| select * from entry order by character_length(keyword) desc |)
-        pattern = keywords.map {|k| Regexp.escape(k[:keyword]) }.join('|')
+        @keywords ||= db.xquery(%| select keyword from entry order by character_length(keyword) desc |)
+        #@keywords ||= redis.lrange('keywords', 0, -1)
+        #puts @keywords
+        pattern = @keywords.map {|k| Regexp.escape(k[:keyword]) }.join('|')
+        #pattern = @keywords.map {|k| Regexp.escape(k) }.join('|')
         kw2hash = {}
         hashed_content = content.gsub(/(#{pattern})/) {|m|
           matched_keyword = $1
@@ -128,6 +147,8 @@ module Isuda
 
     get '/initialize' do
       db.xquery(%| DELETE FROM entry WHERE id > 7101 |)
+      redis.del('keywords')
+      redis.rpush('keywords', db.xquery(%| select keyword from entry order by character_length(keyword) desc |).map{|e| e[:keyword]})
       isutar_initialize_url = URI(settings.isutar_origin)
       isutar_initialize_url.path = '/initialize'
       Net::HTTP.get_response(isutar_initialize_url)
@@ -222,6 +243,8 @@ module Isuda
         ON DUPLICATE KEY UPDATE
         author_id = ?, keyword = ?, description = ?, updated_at = NOW()
       |, *bound)
+      redis.del('keywords')
+      redis.rpush('keywords', db.xquery(%| select keyword from entry order by character_length(keyword) desc |).map{|e| e[:keyword]})
 
       redirect_found '/'
     end
@@ -229,7 +252,7 @@ module Isuda
     get '/keyword/:keyword', set_name: true do
       keyword = params[:keyword] or halt(400)
 
-      entry = db.xquery(%| select * from entry where keyword = ? |, keyword).first or halt(404)
+      entry = db.xquery(%| select keyword, description from entry where keyword = ? |, keyword).first or halt(404)
       entry[:stars] = load_stars(entry[:keyword])
       entry[:html] = htmlify(entry[:description])
 
@@ -243,11 +266,13 @@ module Isuda
       keyword = params[:keyword] or halt(400)
       is_delete = params[:delete] or halt(400)
 
-      unless db.xquery(%| SELECT * FROM entry WHERE keyword = ? |, keyword).first
+      unless db.xquery(%| SELECT id FROM entry WHERE keyword = ? |, keyword).first
         halt(404)
       end
 
       db.xquery(%| DELETE FROM entry WHERE keyword = ? |, keyword)
+      redis.del('keywords')
+      redis.rpush('keywords', db.xquery(%| select keyword from entry order by character_length(keyword) desc |).map{|e| e[:keyword]})
 
       redirect_found '/'
     end
